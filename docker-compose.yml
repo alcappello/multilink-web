@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  mongodb:
+    container_name: multilink_mongodb
+    image: mongo:latest
+    networks:
+      - data
+    ports:
+      - 27017:27017
+    volumes:
+      - mariadb_disk:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=abracadabra
+      - MYSQL_DATABASE=multilink
+      - MYSQL_USER=multilink
+      - MYSQL_PASSWORD=multilink
+
+  api:
+    container_name: multilink_api
+    build:
+      context: ../multilink-api
+      dockerfile: ../multilink-web/Dockerfile
+    networks:
+      - data
+      - application
+    volumes:
+      - ../multilink-api/src:/app/src
+      - ../multilink-api/test:/app/test
+    working_dir: /app
+    command: yarn start:dev
+
+  web:
+    container_name: multilink_web
+    build:
+      context: .
+    networks:
+      - application
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    working_dir: /app
+    stdin_open: true
+
+  nginx:
+    container_name: multilink_nginx
+    image: nginx:alpine
+    networks:
+      - application
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+
+
+networks:
+  data:
+  application:
+
+volumes:
+  mariadb_disk:

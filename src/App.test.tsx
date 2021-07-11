@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import { App } from './App';
 
-test('renders learn react link', () => {
+it('renders a text input for entering a link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByRole('textbox', { name: /add link/i });
   expect(linkElement).toBeInTheDocument();
 });
