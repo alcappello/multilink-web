@@ -67,8 +67,7 @@
     },
     "rules": {
       "prefer-template": "error",
-      "prettier/prettier": "error",
-      "no-unused-vars": "error"
+      "prettier/prettier": "error"
     }
   },
   "browserslist": {

@@ -1,10 +1,17 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import { Button, Columns, Form } from 'react-bulma-components';
+import { Context as LinksContext } from '../context/LinksContext';
 
 const { Field, Control, Input } = Form;
 
 export const UrlForm: React.FC = () => {
   const [url, setUrl] = useState('');
+  const { addLink } = useContext(LinksContext);
+
+  const addAndClean = async () => {
+    await addLink(url);
+    setUrl('');
+  };
 
   return (
     <Columns>
@@ -16,7 +23,7 @@ export const UrlForm: React.FC = () => {
         </Field>
       </Columns.Column>
       <Columns.Column size={3}>
-        <Button fullwidth color={'success'}>
+        <Button fullwidth color={'success'} onClick={addAndClean}>
           Add Link
         </Button>
       </Columns.Column>
